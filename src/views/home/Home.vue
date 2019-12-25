@@ -62,7 +62,8 @@
         isShowBackTop: false,
         isLoad: false,
         tabOffsetTop: 0,
-        isTabFixed: false
+        isTabFixed: false,
+        saveY: 0
       }
     },
     created() {
@@ -81,6 +82,18 @@
       refresh();
     });
     },
+    destroyed() {
+      console.log(1);
+    },
+
+    activated() {
+      this.$refs.scroll.scrollTo(0,this.saveY,0);
+      this.$refs.scroll.refresh()
+    },
+    deactivated() {
+      this.saveY = this.$refs.scroll.getScrollY();
+      console.log(this.$refs.scroll.getScrollY());
+    },
 
     computed: {
       showGoods() {
@@ -89,7 +102,6 @@
     },
 
     methods: {
-
       backClick() {
         this.$refs.scroll.scrollTo(0,0,500);
       },
