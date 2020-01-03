@@ -77,9 +77,9 @@
 
     mounted() {
       const refresh = debounce(this.$refs.scroll.refresh,100);
-
-      this.$bus.$on('itemImageLoad', () => {
+      this.$bus.$on('homeItemImageLoad', () => {
       refresh();
+        console.log('home刷新');
     });
     },
     destroyed() {
