@@ -28,7 +28,6 @@
   import Scroll from "components/common/scroll/Scroll"
   import TabControl from "components/content/tabControl/TabControl"
   import GoodsList from "components/content/goods/GoodsList"
-  import BackTop from "components/content/backTop/BackTop"
 
   import HomeSwiper from "./childComps/HomeSwiper"
   import RecommendView from "./childComps/RecommendView"
@@ -36,9 +35,11 @@
 
   import {getHomeMultidata,getHomeGoods} from "network/home";
   import {debounce} from "common/utils";
+  import {backTopMixin} from "common/mixin"
 
   export default {
     name: "Home",
+    mixins: [backTopMixin],
     components: {
       NavBar,
       HomeSwiper,
@@ -47,7 +48,6 @@
       TabControl,
       GoodsList,
       Scroll,
-      BackTop
     },
     data() {
       return{
@@ -102,10 +102,6 @@
     },
 
     methods: {
-      backClick() {
-        this.$refs.scroll.scrollTo(0,0,500);
-      },
-
       contentScroll(position) {
         this.isShowBackTop = -position.y >1000;
         this.isTabFixed = this.tabOffsetTop < -(position.y)

@@ -13,6 +13,8 @@
         <detail-comment-info :comment-info="commentInfo" ref="comment"></detail-comment-info>
         <goods-list :goods="recommends" ref="list"></goods-list>
       </scroll>
+      <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
+      <detail-bottom-bar @addToCart="addToCart"></detail-bottom-bar>
     </div>
 </template>
 
@@ -24,14 +26,17 @@
   import DetailGoodsInfo from "./childComps/DetailGoodsInfo"
   import DetailParamInfo from "./childComps/DetailParamInfo"
   import DetailCommentInfo from "./childComps/DetailCommentInfo"
+  import DetailBottomBar from "./childComps/DetailBottomBar"
 
   import Scroll from "components/common/scroll/Scroll"
   import GoodsList from "components/content/goods/GoodsList"
 
   import {getDetail,Goods,Shop,getRecommend} from "network/detail";
   import {debounce} from "common/utils";
+  import {backTopMixin} from "common/mixin"
     export default {
         name: "Detail",
+      mixins: [backTopMixin],
       components: {
         DetailNavBar,
         DetailSwiper,
@@ -40,6 +45,7 @@
         DetailGoodsInfo,
         DetailParamInfo,
         DetailCommentInfo,
+        DetailBottomBar,
         Scroll,
         GoodsList
       },
@@ -73,7 +79,7 @@
         getRecommend().then(res => {
           console.log(res);
           this.recommends = res.data.data.list
-        })
+        });
 
         this.getThemeTopYs = debounce(() => {
           this.themeTopYs = [];
@@ -102,10 +108,11 @@
           this.$refs.scroll.scrollTo(0,-this.themeTopYs[index] + 44,300)
         },
         contentScroll(position) {
-         const positionY = -position.y + 44;
-          let length = this.themeTopYs.length;
-          for(let i = 0;i < length-1; i++)
-          {
+            this.isShowBackTop = -position.y >1000;
+            const positionY = -position.y + 44;
+            let length = this.themeTopYs.length;
+            for(let i = 0;i < length-1; i++)
+            {
             if(this.currentIndex !== i && (positionY >= this.themeTopYs[i] && positionY < this.themeTopYs[i+1]))
             {
               this.currentIndex = i;
@@ -113,6 +120,17 @@
               this.$refs.nav.currentIndex = this.currentIndex;
             }
           }
+        },
+        addToCart() {
+          const product = {};
+          product.image = this.topImages[0];
+          product.title = this.goods.title;
+          product.desc = this.goods.desc;
+          product.price = this.goods.realPrice;
+          product.checked = false;
+          product.count = 1;
+          product.iid = this.iid;
+          this.$store.dispatch('addCart',product)
         }
       }
     }
@@ -126,7 +144,7 @@
     background-color: #ffffff;
   }
   .center{
-    height: calc(100% - 44px);
+    height: calc(100% - 44px - 49px);
     overflow: hidden;
   }
 </style>

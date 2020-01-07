@@ -43,6 +43,7 @@
           {
             this.scroll.on('pullingUp',() => {
               console.log("加载更多");
+              console.log(this.pullUpLoad);
               this.$emit('pullingUp')
             })
           }
