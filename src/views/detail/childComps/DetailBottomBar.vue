@@ -1,22 +1,22 @@
 <template>
   <div class="bottom-bar">
     <div class="bar-item bar-left">
-      <div>
+      <div @click="more">
         <i class="icon service"></i>
         <span class="text">客服</span>
       </div>
-      <div>
+      <div @click="more">
         <i class="icon shop"></i>
         <span class="text">店铺</span>
       </div>
-      <div>
+      <div @click="more">
         <i class="icon select"></i>
         <span class="text">收藏</span>
       </div>
     </div>
     <div class="bar-item bar-right">
       <div class="cart" @click="addToCart">加入购物车</div>
-      <div class="buy">购买</div>
+      <div class="buy" @click="add">购买</div>
     </div>
   </div>
 </template>
@@ -27,6 +27,12 @@
       methods: {
           addToCart() {
             this.$emit('addToCart')
+          },
+          add() {
+            this.$toast.show('没钱买什么', 1500)
+          },
+          more() {
+            this.$toast.show('没做', 1500)
           }
       }
     }

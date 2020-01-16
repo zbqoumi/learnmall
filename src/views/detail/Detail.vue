@@ -74,10 +74,9 @@
           this.shop = new Shop(data.shopInfo);
           this.detailInfo = data.detailInfo;
           this.itemParams = data.itemParams;
-          this.commentInfo = data.rate.list[0]
+          this.commentInfo = data.rate.list[0];
         });
         getRecommend().then(res => {
-          console.log(res);
           this.recommends = res.data.data.list
         });
 
@@ -88,7 +87,6 @@
           this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
           this.themeTopYs.push(this.$refs.list.$el.offsetTop);
           this.themeTopYs.push(Number.MAX_VALUE);
-          console.log(this.themeTopYs);
         },200)
       },
       mounted() {
@@ -130,7 +128,11 @@
           product.checked = false;
           product.count = 1;
           product.iid = this.iid;
-          this.$store.dispatch('addCart',product)
+          this.$store.dispatch('addCart',product).then(res =>{
+            this.$toast.show(res,1500)
+            // console.log(this.$toast);
+            // console.log(res);
+          })
         }
       }
     }

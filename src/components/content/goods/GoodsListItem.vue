@@ -10,6 +10,7 @@
 </template>
 
 <script>
+
     export default {
         name: "GoodsListItem",
       props: {
@@ -30,6 +31,10 @@
             {
               this.$bus.$emit('detailItemImageLoad');
             }
+            else if(this.$route.path.indexOf('/category') === 0)
+            {
+              this.$emit('refresh');
+            }
           },
         itemClick() {
           this.$router.push('/detail/'+ this.goodsItem.iid)
@@ -40,7 +45,7 @@
       },
       computed: {
         showImage() {
-          return this.goodsItem.image || this.goodsItem.show.img
+          return  this.goodsItem.img  || this.goodsItem.image || this.goodsItem.show.img
         }
       }
     }

@@ -1,4 +1,5 @@
 import BackTop from "components/content/backTop/BackTop"
+import {POP, NEW, SELL} from "./const";
 export const backTopMixin = {
   data() {
     return {

@@ -21,6 +21,7 @@
     padding: 2px;
     border-radius: 50%;
     border: 2px solid #aaa;
+    background-color: white;
   }
 
   .active{

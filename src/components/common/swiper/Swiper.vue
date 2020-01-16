@@ -204,6 +204,13 @@
 
         // 3.添加定时器
         this.startTimer();
+      },
+
+      stop() {
+        this.stopTimer();
+      },
+      start() {
+        this.startTimer();
       }
     }
 	}

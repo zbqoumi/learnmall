@@ -13,7 +13,7 @@
             @scroll="contentScroll"
             :pull-up-load="true"
             @pullingUp="loadMore">
-    <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"></home-swiper>
+    <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad" ref="homeSwiper"></home-swiper>
     <recommend-view :recommends="recommends"></recommend-view>
     <feature-view></feature-view>
     <tab-control :titles="['流行','新款','精选']" ref="tabControl" @tabClick="tabClick"></tab-control>
@@ -63,7 +63,8 @@
         isLoad: false,
         tabOffsetTop: 0,
         isTabFixed: false,
-        saveY: 0
+        saveY: 0,
+        number: 0,
       }
     },
     created() {
@@ -88,11 +89,14 @@
 
     activated() {
       this.$refs.scroll.scrollTo(0,this.saveY,0);
-      this.$refs.scroll.refresh()
+      this.$refs.scroll.refresh();
+      this.number++;
+      if(this.number > 1)
+      this.$refs.homeSwiper.start();
     },
     deactivated() {
       this.saveY = this.$refs.scroll.getScrollY();
-      console.log(this.$refs.scroll.getScrollY());
+      this.$refs.homeSwiper.stop();
     },
 
     computed: {
@@ -104,7 +108,7 @@
     methods: {
       contentScroll(position) {
         this.isShowBackTop = -position.y >1000;
-        this.isTabFixed = this.tabOffsetTop < -(position.y)
+        this.isTabFixed = this.tabOffsetTop < -(position.y) - 1.5
       },
 
       loadMore() {
@@ -177,13 +181,14 @@
 
   .tab-control{
     position: relative;
+    top: -1.5px;
     z-index: 9;
   }
 
   .content{
     overflow: hidden;
     position: absolute;
-    top: 44px;
+    top: 43.5px;
     bottom: 49px;
     left: 0;
     right: 0;

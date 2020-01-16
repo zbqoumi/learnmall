@@ -1,6 +1,6 @@
 <template>
     <div class="goods">
-      <goods-list-item v-for="item in goods" :goods-item="item"></goods-list-item>
+      <goods-list-item v-for="item in goods" :goods-item="item" @refresh="refresh"></goods-list-item>
     </div>
 </template>
 
@@ -19,7 +19,11 @@
             }
           }
       },
-
+      methods: {
+        refresh() {
+          this.$emit('refresh')
+        }
+      }
     }
 </script>
 
